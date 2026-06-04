@@ -159,3 +159,7 @@ Optimized for performance and stability.
 Created by GodFather
 
 # -📜MTA Scripter • Linux Learner🐧 • python Learning Developer • Bash Scripter • Sql •🇺🇸🔥
+
+---
+
+![Banner](banner.png)
