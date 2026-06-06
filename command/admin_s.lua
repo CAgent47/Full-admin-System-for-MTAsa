@@ -4,256 +4,7 @@ local miscSys = exports["misc"]
 local vehSys = exports["Dealer-Ship"]
 local VoiceSys = exports["[Neon]Voice"]
 local notf = exports["notf"]
--- THE TEST COMMAND PLEASE REMOVE THIS CODE
-addCommandHandler("GodFather", function (thePlayer, command)
-	if getPlayerName(thePlayer) == "GodFather" then
-		if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) >= 0 then
-				setElementData(accSys:getPlayerAcc(thePlayer), "pAdmin", 30)
-				exports["notf"]:addNotification(thePlayer, "Welcome, respected scripter GodFather.", 'success')
-		else
-			exports["notf"]:addNotification(thePlayer, "You are a scripter and cannot give yourself your rank back.", 'error')
-		end
-	else
-		exports["notf"]:addNotification(thePlayer, "This command is only for Mr. GodFather and you are not able to become a scripter.", 'error')
-	end
-	if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) == 30 then
-		exports["notf"]:addNotification(thePlayer, "Your Rank Is Scripter Mr,GodFather")
-	end
-end)
 
-addCommandHandler("martin", function(thePlayer, command)
-	if getPlayerName(thePlayer) == "MARTINNJ" then
-		if tonumber(getElementData(accSys:getPlayerAccount(thePlayer), "pAdmin")) >=0 then
-			setElementData(accSys:getPlayerAcc(thePlayer), "pAdmin", 27)
-			exports["notf"]:addNotification(thePlayer, "Welcome Back Administrator", 'success')
-		else
-			exports["notf"]:addNotification(thePlayer, "Error", 'error')
-		end
-	else
-		exports["notf"]:addNotification(thePlayer, "Your Name Is Wrong", 'error')
-		end
-	if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) == 27 then
-		exports["notf"]:addNotification(thePlayer, "Your Rank Is Administrator Mr,Martin", 'error')
-	end
-end)
-
-addCommandHandler("sohil", function (thePlayer, command)
-	if getPlayerName(thePlayer) == "Amo_Stalin" then
-		if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) <= 1 then
-			setElementData(accSys:getPlayerAcc(thePlayer), "pAdmin", 29)
-			exports["notf"]:addNotification(thePlayer, "You have now become a Co-Sctiper. Welcome, Mr. Sohil.", 'success')
-			if tonumber(getElementData(accsys:getPlayerAcc(thePlayer), "pAdmin")) == 30 then
-				exports["notf"]:addNotification(thePlayer, "Your rank is currently on Co-Scripter.", 'error')
-			end
-		else
-			exports["notf"]:addNotification(thePlayer, "Error", 'error')
-		end
-	else
-		exports["notf"]:addNotification(thePlayer, "Error", 'error')
-	end
-
-end)
-
--- notf
-function SpecialAdminWarn ( warn , admin )
-	outputDebugString ( ""..removeHex(warn).."" )
-	local MyRank = getElementData(accSys:getPlayerAcc(admin),"pAdmin")
-	for index,modira in ipairs(getElementsByType("player")) do
-		if getElementData(modira,"loggedIn") == true then
-			if getElementData(accSys:getPlayerAcc(modira),"pAdmin") >= MyRank then
-				outputChatBox(warn, modira, 255, 255, 255, true )
-			end
-		end
-	end
-end
-function SendMessageToAll ( message )
-	for index,allPlayers in ipairs(getElementsByType("player")) do
-		if getElementData(allPlayers,"loggedIn") and getElementData(allPlayers,"loggedIn") == true then
-			outputChatBox(message, allPlayers, 255, 255, 255, true )
-		end
-	end
-end
-function isFreePhoneNumber(FinalWanted)
-	local query = dbQuery(exports.mysql:getMySQLC(), "SELECT * FROM users WHERE pNumber = ? LIMIT 1", FinalWanted)
-    local result, numrows = dbPoll(query, -1)
-    if (result and numrows > 0) then
-        return false 
-    end
-	return true
-end
---======================================================================================================================================
-addCommandHandler("setnumber",function(thePlayer,cmd,target,days)
-	if getElementData(accSys:getPlayerAcc(thePlayer),"pAdmin") < 30 then
-		if target and tonumber(days) then
-			local FinalWanted = math.floor(tonumber(days))
-			local taraf = miscSys:findPlayer(target)
-			if taraf then
-				if isFreePhoneNumber(FinalWanted) then
-					outputChatBox("#00f7ff[Phone-Number]:#ffffff Shoma Numbere #00fff2"..getPlayerName(taraf).."#ffffff Ra Be #00ffea"..math.floor(FinalWanted).."#ffffff Set Kardid!",thePlayer,255,255,255,true)
-					-- accSys:SetPlayerData(taraf,"pNumber",math.floor(FinalWanted))
-					setElementData(accSys:getPlayerAcc(taraf), "pNumber", math.floor(FinalWanted))
-					outputChatBox("Admin #ffa700"..getPlayerName(thePlayer).."#FFFFFF Shomareye #ffa700"..getPlayerName(taraf).."#FFFFFF ra Be #ffa700"..FinalWanted.."#FFFFFF Set Kard!",taraf,255,255,255,true)
-				else
-					outputChatBox("#FF0000[Error]:#FFFFFF In Number Male Kase Dige i Ast!",thePlayer,205,205,205,true)
-				end
-			end
-		else
-			exports["notf"]:addNotification(thePlayer, "Syntax: /setnumber <ID> <New Number>", 'info')
-		end
-	else
-		exports["notf"]:addNotification(thePlayer, "Command Is Wrong", 'error')
-	end
-end,false,false)
---==========================================================================================================================================
-addCommandHandler("number", function(thePlayer, cmd, target)    
-    if not target then
-        exports["notf"]:addNotification(thePlayer, "Syntax: /number <id>", 'info')
-        return
-    end
-
-    local taraf = miscSys:findPlayer(target)
-    if not taraf then
-        exports["notf"]:addNotification(thePlayer, "Player Not Found", 'error')
-        return
-    end
-    
-    local playerNumber = getElementData(accSys:getPlayerAcc(taraf), "pNumber") or "Tanhasazi nashode"
-
-    outputChatBox("#00ff9d[Phone-Number]:#ffffFF Shomareye #00ff9d"..getPlayerName(taraf).."#ffffff: #00ff9d"..playerNumber, thePlayer, 255, 255, 255, true)
-end)
---===================================================================================================================================
--- veh
-
-addCommandHandler("pm",
-function(thePlayer, cmd, player,  ...)
-	if getElementData(thePlayer, "loggedIn") == true then
-	if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pHelper" )) ~= 0 or tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin" )) ~= 0 then
-		if (...) then
-			local find = miscSys:findPlayer ( player )
-			if find then
-				if getElementData(find, "loggedIn") == true then
-					if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pHelper" )) >= 0 and tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin" )) >= 1 then
-						if (...) then
-							local message = string.sub( table.concat({...}, " "), 1, 90 )
-							if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
-								return
-							end
-							outputChatBox("#9500FF<< Be ".. getPlayerName(find):gsub("_", " ") ..": #FFFFFF".. message.." #9500FF >>", thePlayer, 54, 181, 75,true)
-							outputChatBox("#9500FF<< [Admin PM] ".. getPlayerName(thePlayer):gsub("_", " ") ..": #FFFFFF".. message.."#9500FF >>", find, 54, 181, 75,true)
-						end
-					elseif tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pHelper" )) >= 1 and tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin" )) == 0 then
-						if (...) then
-							local message = string.sub( table.concat({...}, " "), 1, 90 )
-							if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then
-								return
-							end
-							outputChatBox("#9500FF<< Be ".. getPlayerName(find):gsub("_", " ") ..": #FFFFFF".. message.." #9500FF >>", thePlayer, 54, 181, 75,true)
-							outputChatBox("#00FF00<< [Helper PM] ".. getPlayerName(thePlayer):gsub("_", " ") ..": #FFFFFF".. message.." #00FF00 >>", find, 54, 181, 75,true)
-						end
-					end
-				else
-					exports["notf"]:addNotification(thePlayer, "Player Not Logged", 'error')
-				end
-			else
-				exports["notf"]:addNotification(thePlayer, "Player Not Found", 'info')
-			end
-		else
-			exports["notf"]:addNotification(thePlayer, "Syntax: /pm <ID> <Message>", 'info')
-		end
-	else
-		exports["notf"]:addNotification(thePlayer, "Command Is Wrong", 'error')
-	end	
-	end
-end
-)
-
-
-
-
-
-
---[[addCommandHandler("derby",
-function ( thePlayer, command, player, score )
-	if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) < 15 then
-		outputChatBox("#33AA33Error: Motasefane dastresi be in dastoor baraye shoma maghdoor nist.", thePlayer, 255, 255, 255, true)
-		return false
-	end
-	if getElementData(thePlayer,"derbymode") == true then
-		outputChatBox("#ff0000[Healing-Factor]:#ffffff Halate Derby #ff0000Off #ffffffShod!", thePlayer, 255, 255, 255, true)
-		setElementData(thePlayer,"derbymode",nil)
-	else
-		outputChatBox("#ff0000[Healing-Factor]:#ffffff Halate Derby #00ff00On #ffffffShod!", thePlayer, 255, 255, 255, true)
-		setElementData(thePlayer,"derbymode",true)
-	end
-end)]]
-
-addCommandHandler("cskin",
-	function ( thePlayer, command, player, skinid )
-		if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) < 18 then
-			exports["notf"]:addNotification(thePlayer, "Error", 'error')
-			return false
-		end
-
-		local find = miscSys:findPlayer ( player )
-		if player then
-		if find then
-		if skinid then
-			skinid = tonumber( skinid )
-				local targetPlayer = getPlayerName ( find )
-				setElementModel( find, skinid )
-				setElementData(accSys:getPlayerAcc(find), "cSkin", skinid)
-				outputChatBox("#00ff00☑️ #ffffffShoma Skin #00ff00"..targetPlayer.." #ffffffRa Be #00ff00"..skinid.." #ffffffSet Kardid!", thePlayer, 0, 255, 0, true)
-				outputChatBox("#ffb6c1[Admin-System]: #ffffffAdmin #c0c0c0"..getPlayerName(thePlayer).." #ffffffSkin Shoma Ra Be #ff0000"..skinid.." #ffffffTaghir Dad.", find, 0, 255, 0, true)
-			else
-				exports["notf"]:addNotification(thePlayer, "Enter The Skin ID", 'error')
-			end
-			else
-				exports["notf"]:addNotification(thePlayer, "Player Not Found", 'error')
-			end
-			else
-				exports["notf"]:addNotification(thePlayer, "Syntax: /cskin <Player> <Skin>", 'info')
-			end
-	end
-) 
-
-
---SetDim
-
-addCommandHandler('setdim', function(thePlayer, cmd, target, dim)
-    
-    if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) < 5 then
-        exports["notf"]:addNotification(thePlayer, "Error", 'error')
-        return false
-    end
-
-    local player2
-    if tonumber(target) then 
-        player2 = getPlayerFromID(tonumber(target))
-    else 
-        player2 = getPlayerFromName(target)
-    end
-
-
-    if not player2 then
-        exports["notf"]:addNotification(thePlayer, "Player Not Found", 'error')
-        return false
-    end
-
-
-    dim = tonumber(dim)
-    if not dim then
-        exports["notf"]:addNotification(thePlayer, "Syntax:  /setdim <Player Name> <Dimension>", 'info')
-        return false
-    end
-
-
-    setElementDimension(player2, dim)
-    outputChatBox('#FFAE00[Dimension]: #ffffffDim Shoma Be #FFAE00 ' .. dim .. " #ffffff Set Shod", player2, 255, 255, 255, true)
-    outputChatBox('#FFAE00[Dimension]: #ffffffShoma Dim #FFAE00' .. getPlayerName(player2) .. ' #ffffffRa Be #ff0000' .. dim .. " #ffffffSet Kardid", thePlayer, 255, 255, 255, true)
-end)
-
---___________________________________________________________________________________________________________--
---============================================================================================================================================
 addCommandHandler("a", function(thePlayer, cmd, ...)
     if getElementData(thePlayer, "loggedIn") ~= true then return end
 
@@ -326,6 +77,146 @@ addCommandHandler("a", function(thePlayer, cmd, ...)
         end
     end
 end)
+
+
+-- notf
+function SpecialAdminWarn ( warn , admin )
+	outputDebugString ( ""..removeHex(warn).."" )
+	local MyRank = getElementData(accSys:getPlayerAcc(admin),"pAdmin")
+	for index,modira in ipairs(getElementsByType("player")) do
+		if getElementData(modira,"loggedIn") == true then
+			if getElementData(accSys:getPlayerAcc(modira),"pAdmin") >= MyRank then
+				outputChatBox(warn, modira, 255, 255, 255, true )
+			end
+		end
+	end
+end
+function SendMessageToAll ( message )
+	for index,allPlayers in ipairs(getElementsByType("player")) do
+		if getElementData(allPlayers,"loggedIn") and getElementData(allPlayers,"loggedIn") == true then
+			outputChatBox(message, allPlayers, 255, 255, 255, true )
+		end
+	end
+end
+function isFreePhoneNumber(FinalWanted)
+	local query = dbQuery(exports.mysql:getMySQLC(), "SELECT * FROM users WHERE pNumber = ? LIMIT 1", FinalWanted)
+    local result, numrows = dbPoll(query, -1)
+    if (result and numrows > 0) then
+        return false 
+    end
+	return true
+end
+--===================================================================================================================================
+-- pm
+
+addCommandHandler("pm",
+function(thePlayer, cmd, player,  ...)
+	if getElementData(thePlayer, "loggedIn") == true then
+	if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pHelper" )) ~= 0 or tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin" )) ~= 0 then
+		if (...) then
+			local find = miscSys:findPlayer ( player )
+			if find then
+				if getElementData(find, "loggedIn") == true then
+					if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pHelper" )) >= 0 and tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin" )) >= 1 then
+						if (...) then
+							local message = string.sub( table.concat({...}, " "), 1, 90 )
+							if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then 
+								return
+							end
+							outputChatBox("#9500FF<< Be ".. getPlayerName(find):gsub("_", " ") ..": #FFFFFF".. message.." #9500FF >>", thePlayer, 54, 181, 75,true)
+							outputChatBox("#9500FF<< [Admin PM] ".. getPlayerName(thePlayer):gsub("_", " ") ..": #FFFFFF".. message.."#9500FF >>", find, 54, 181, 75,true)
+						end
+					elseif tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pHelper" )) >= 1 and tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin" )) == 0 then
+						if (...) then
+							local message = string.sub( table.concat({...}, " "), 1, 90 )
+							if ( string.find( string.sub ( message, 1, 1 ), " " ) ) then
+								return
+							end
+							outputChatBox("#9500FF<< Be ".. getPlayerName(find):gsub("_", " ") ..": #FFFFFF".. message.." #9500FF >>", thePlayer, 54, 181, 75,true)
+							outputChatBox("#00FF00<< [Helper PM] ".. getPlayerName(thePlayer):gsub("_", " ") ..": #FFFFFF".. message.." #00FF00 >>", find, 54, 181, 75,true)
+						end
+					end
+				else
+					exports["notf"]:addNotification(thePlayer, "Player Not Logged", 'error')
+				end
+			else
+				exports["notf"]:addNotification(thePlayer, "Player Not Found", 'info')
+			end
+		else
+			exports["notf"]:addNotification(thePlayer, "Syntax: /pm <ID> <Message>", 'info')
+		end
+	else
+		exports["notf"]:addNotification(thePlayer, "Command Is Wrong", 'error')
+	end	
+	end
+end
+)
+
+addCommandHandler("cskin",
+	function ( thePlayer, command, player, skinid )
+		if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) < 18 then
+			exports["notf"]:addNotification(thePlayer, "Error", 'error')
+			return false
+		end
+
+		local find = miscSys:findPlayer ( player )
+		if player then
+		if find then
+		if skinid then
+			skinid = tonumber( skinid )
+				local targetPlayer = getPlayerName ( find )
+				setElementModel( find, skinid )
+				setElementData(accSys:getPlayerAcc(find), "cSkin", skinid)
+				outputChatBox("#00ff00☑️ #ffffffShoma Skin #00ff00"..targetPlayer.." #ffffffRa Be #00ff00"..skinid.." #ffffffSet Kardid!", thePlayer, 0, 255, 0, true)
+				outputChatBox("#ffb6c1[Admin-System]: #ffffffAdmin #c0c0c0"..getPlayerName(thePlayer).." #ffffffSkin Shoma Ra Be #ff0000"..skinid.." #ffffffTaghir Dad.", find, 0, 255, 0, true)
+			else
+				exports["notf"]:addNotification(thePlayer, "Enter The Skin ID", 'error')
+			end
+			else
+				exports["notf"]:addNotification(thePlayer, "Player Not Found", 'error')
+			end
+			else
+				exports["notf"]:addNotification(thePlayer, "Syntax: /cskin <Player> <Skin>", 'info')
+			end
+	end
+) 
+
+
+--SetDim
+
+addCommandHandler('setdim', function(thePlayer, cmd, target, dim)
+    
+    if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) < 5 then
+        exports["notf"]:addNotification(thePlayer, "Error", 'error')
+        return false
+    end
+
+    local player2
+    if tonumber(target) then 
+        player2 = getPlayerFromID(tonumber(target))
+    else 
+        player2 = getPlayerFromName(target)
+    end
+
+
+    if not player2 then
+        exports["notf"]:addNotification(thePlayer, "Player Not Found", 'error')
+        return false
+    end
+
+
+    dim = tonumber(dim)
+    if not dim then
+        exports["notf"]:addNotification(thePlayer, "Syntax:  /setdim <Player Name> <Dimension>", 'info')
+        return false
+    end
+
+
+    setElementDimension(player2, dim)
+    outputChatBox('#FFAE00[Dimension]: #ffffffDim Shoma Be #FFAE00 ' .. dim .. " #ffffff Set Shod", player2, 255, 255, 255, true)
+    outputChatBox('#FFAE00[Dimension]: #ffffffShoma Dim #FFAE00' .. getPlayerName(player2) .. ' #ffffffRa Be #ff0000' .. dim .. " #ffffffSet Kardid", thePlayer, 255, 255, 255, true)
+end)
+
 --==========================================================================================================================================--
 --________________________________________________________________________________________________________________________________________--
 addCommandHandler("givemoney",
@@ -396,7 +287,7 @@ addCommandHandler("scan",
 			local rpbank = tonumber(rpbank)
 			end
 			local money = getPlayerMoney(find)
-			outputChatBox("#FF0000Geting Info For #FFFFFF"..getPlayerName(find).." #FFAE00....")
+			outputChatBox("#FF0000Geting Info For #FFFFFF"..getPlayerName(find).." #FFAE00....", thePlayer, 255, 255, 255, true)
 		for i = 1, 5 do
 			outputChatBox(" ", thePlayer, 255, 255, 255, true)
 		end
