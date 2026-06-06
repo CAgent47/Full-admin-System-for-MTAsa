@@ -152,6 +152,31 @@ function(thePlayer, cmd, player,  ...)
 end
 )
 
+addCommandHandler("setnumber", function (thePlayer, _, target, newNumber)
+    local adminRank = tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin"))
+    local digit_Check = string.match(newNumber, "%d%d%d%d%d%d%d")
+    local player_Name = getPlayerName(thePlayer)
+    local target_Name = getPlayerName(target)
+    local find = miscSys:findPlayer(target)
+    local newNumber = tonumber(newNumber)
+
+    if adminRank < 17 then return false end
+    if digit_Check then
+        if find then
+            setElementData(accSys:getPlayerAcc(find), "pPnumber", newNumber)
+            outputChatBox("#00FFFF[Admin_System]: #FFAE00'"..target_Name.."' #FFFFFFNumber has been set to #FF0000'"..newNumber.."' #FFFFFFBy Admin #FFAE00'"..player_Name.."'", thePlayer, 255, 255, 255, true)
+            outputChatBox("#00FFFF[Admin_System]: #FFAE00'"..target_Name.."' #FFFFFFNumber has been set to #FF0000'"..newNumber.."' #FFFFFFBy Admin #FFAE00'"..player_Name.."'", find, 255, 255, 255, true)
+        else
+            exports["notf"]:addNotification(thePlayer, "Player Not Found", 'error')
+            exports["notf"]:addNotification(thePlayer, "Syntax: /setnumber <target> <new_Number>", 'info')
+        end
+    else
+        exports["notf"]:addNotification(thePlayer, "Please enter no less than 7 digits", 'error')
+        exports["notf"]:addNotification(thePlayer, "Syntax: /setnumber <target> <new_Number>", 'info')
+    end
+end)
+
+
 addCommandHandler("cskin",
 	function ( thePlayer, command, player, skinid )
 		if tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin")) < 18 then
