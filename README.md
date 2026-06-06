@@ -10,6 +10,15 @@ Designed for serious RP / Freeroam / Roleplay servers.
 
 ---
 
+# New Command Added:
+
+**/setnumber <target> <new_Number>**
+For Set New Game Phone Number
+
+Optimaizing Admin System....
+
+---
+
 ## 🚀 Core Features
 
 ### 🛡️ Complete Admin System
