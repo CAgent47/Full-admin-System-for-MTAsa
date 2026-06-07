@@ -726,6 +726,40 @@ function PmForAll ( thePlayer, _, ... )
     end
 end
 addCommandHandler ("o", PmForAll)
+
+addCommandHandler("opm", function (thePlayer, _, pmID)
+	local pm = {
+		[1] = {pm_message = "#FF0000[Server-Alert]: #FFFFFFThe server is being updated and you will be kicked out in a few minutes."},
+		[2] = {pm_message = "#FF0000[Server-Alert]: #FFFFFFRestarting System......"},
+		[3] = {pm_message = "#FF0000[Server-Alert]: #FFFFFFThe server is restarting and you will be kicked out in a moment."}
+	}
+	local pmID = tonumber(pmID)
+	local player_Rank = tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin"))
+	local message = pm[pmID]
+	local sender_name = getPlayerName(thePlayer)
+
+	if player_Rank > 25 then return false end
+	if not pmID or pmID < 0 or pmID > 3 then
+		exports["notf"]:addNotification(thePlayer, "Syntax: /opm <PMID 1 ~ 3>", 'info')
+		return false
+	end
+	for _, players in ipairs(getElementsByType("player")) do
+		if getElementData(players, "loggedIn") and getElementData(players, "loggedIn") == true then
+			outputChatBox(message.pm_message, players, 255, 255, 255, true)
+		end
+	end
+	for i = 1, 2 do
+		outputDebugString("[SERVER-OPM]: "..sender_name.." Message: "..message.pm_message)
+	end
+	triggerClientEvent(root, "PlayNotif", root)
+	if pmID == 1 then
+		for _, kickallPlayers in ipairs(getElementsByType("player")) do
+			if player_Rank < 18 then
+				kickPlayer(kickallPlayers, message.pm_message, "SERVER")
+			end
+		end
+	end
+end)
 --___________________________________________________________________________________________________________________--
 --___________________________________________________________________________________________________________________--
 --[[function PmForAll2 ( thePlayer, _, ... )
