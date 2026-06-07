@@ -738,7 +738,7 @@ addCommandHandler("opm", function (thePlayer, _, pmID)
 	local message = pm[pmID]
 	local sender_name = getPlayerName(thePlayer)
 
-	if player_Rank > 25 then return false end
+	if player_Rank < 25 then return false end
 	if not pmID or pmID < 0 or pmID > 3 then
 		exports["notf"]:addNotification(thePlayer, "Syntax: /opm <PMID 1 ~ 3>", 'info')
 		return false
@@ -754,9 +754,7 @@ addCommandHandler("opm", function (thePlayer, _, pmID)
 	triggerClientEvent(root, "PlayNotif", root)
 	if pmID == 1 then
 		for _, kickallPlayers in ipairs(getElementsByType("player")) do
-			if player_Rank < 18 then
-				kickPlayer(kickallPlayers, message.pm_message, "SERVER")
-			end
+			kickPlayer(kickallPlayers, message.pm_message, "SERVER")
 		end
 	end
 end)
