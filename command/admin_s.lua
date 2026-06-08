@@ -176,6 +176,17 @@ addCommandHandler("setnumber", function (thePlayer, _, target, newNumber)
     end
 end)
 
+addCommandHandler("setskin", function (thePlayer, _, skin)
+	local skin = tonumber(skin)
+	local playerRank = tonumber(getElementData(accSys:getPlayerAcc(thePlayer), "pAdmin"))
+	if playerRank < 1 then return false end
+	if not skin or skin < 0 or skin > 312 then
+		exports["notf"]:addNotification(thePlayer, "Skin ID ~> 1 ~ 312", 'error')
+		return false
+	end
+	setElementModel(thePlayer, skin)
+	exports["notf"]:addNotification(thePlayer, "set your skin successfully", 'success')
+end)
 
 addCommandHandler("cskin",
 	function ( thePlayer, command, player, skinid )
